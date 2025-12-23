@@ -1,0 +1,8 @@
+Options -Indexes
+
+RewriteEngine On
+
+# index.php ni yashirish
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]

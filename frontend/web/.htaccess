@@ -1,0 +1,10 @@
+Options -Indexes
+
+RewriteEngine On
+
+# Agar fayl yoki papka mavjud bo‘lsa, o‘sha holda ochiladi
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Barcha so‘rovlar index.php ga yo‘naltiriladi
+RewriteRule . index.php [L]
