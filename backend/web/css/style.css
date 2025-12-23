@@ -31,21 +31,21 @@ Author URL: https://themeforest.net/user/dreamstechnologies
   --submenu-active-color: var(--primary);
   --menu-active-color: var(--primary);
   --menu-active-bg: var(--primary-transparent);
-  --primary: #E41F07;
+  --primary: #100a09;
   --secondary: #FFA201;
   --light: #F7F8F9;
   --dark: #0A0C0C;
   --white: #fff;
   --success: #1ABE17;
   --info: #2F80ED;
-  --danger: #EF1E1E;
+  --danger: #d1c1c1;
   --indigo: #3538CD;
   --cyan: #067D98;
-  --orange: #EF5E25;
+  --orange: #131211;
   --pink: #DD2590;
   --purple: #800080;
   --teal: #0E9384;
-  --warning: #f9b801;
+  --warning: #0c0a0a;
   --black: #000;
   --gray-100: #CDCDCD;
   --gray-200: #B5B5B5;
@@ -69,12 +69,12 @@ Author URL: https://themeforest.net/user/dreamstechnologies
   --teal-100: #cfe9e6;
   --indigo-100: #d7d7f5;
   --light-hover: #dee0e1;
-  --primary-hover: #c11a06;
+  --primary-hover: #0e0909;
   --secondary-hover: #e08f01;
   --info-hover: #2972d5;
   --warning-hover: #e0a701;
   --success-hover: #179f14;
-  --danger-hover: #d81a1a;
+  --danger-hover: #0b0a0a;
   --indigo-hover: #2f31b4;
   --purple-hover: #730073;
   --pink-hover: #c02180;
@@ -185,7 +185,7 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 :root[data-sidebar=sidebar2], :root[data-sidebar=sidebar2][data-bs-theme=dark] {
   --menu-bg: #F7F8F9;
   --menu-item-color: #323333;
-  --menu-item-hover-color: #FFA201;
+  --menu-item-hover-color: #0c0c0b;
   --menu-item-hover-bg: rgba(255, 162, 1, 0.1);
   --menu-item-active-color: var(--primary);
   --menu-item-active-bg: var(--danger-transparent);
@@ -215,12 +215,12 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 :root[data-sidebar=sidebar4] {
   --menu-bg: #E41F07;
   --menu-item-color: #B5B5B5;
-  --menu-item-hover-color: #FFA201;
+  --menu-item-hover-color: #100a09;
   --menu-item-border: rgba(255, 255, 255, 0.1);
   --menu-item-hover-bg: #FFA201;
   --menu-item-active-color: #B5B5B5;
-  --menu-item-active-bg: #FFA201;
-  --menu-active-color: #FFA201;
+  --menu-item-active-bg: #0c0c0b;
+  --menu-active-color: #0c0c0b;
   --submenu-active-color: #fff;
   --menu-active-bg: var(--primary-transparent);
   --menu-title-color: #fff;
@@ -749,7 +749,7 @@ html[data-bs-theme=dark] #light-dark-mode .ti-moon::before {
   right: 3px;
   width: 6px;
   height: 6px;
-  background-color: #FD5812;
+  background-color: #0c0c0b;
   border-radius: 50px;
 }
 
@@ -4365,6 +4365,9 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 }
 .breadcrumb .breadcrumb-item a:hover {
   color: var(--primary);
+
+
+
 }
 .breadcrumb .breadcrumb-item.active {
   color: var(--gray-900);
@@ -4579,8 +4582,10 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 }
 
 .btn-check:checked + .btn-warning, .btn-warning:first-child:active, :not(.btn-check) + .btn-warning:active, .btn-check + .btn-warning:hover {
-  background-color: var(--warning-hover);
-  border-color: var(--warning-hover);
+  background-color: var(--warning-
+
+  );
+      border-color: var(--warning-hover);
   color: #fff;
 }
 
@@ -5978,12 +5983,12 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 }
 
 [data-color=primary] {
-  --primary: #E41F07;
+  --primary: #cdc5c3;
   --primary-rgb: 228, 31, 7;
 }
 
 [data-color=secondary] {
-  --primary: #FFA201;
+  --primary: #0c0a0a;
   --primary-rgb: 255, 162, 1;
 }
 
@@ -7423,12 +7428,12 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 }
 
 .nav-tabs.nav-bordered-primary.nav-tabs-top .nav-item .nav-link:hover, .nav-tabs.nav-bordered-primary.nav-tabs-top .nav-item .nav-link:focus {
-  color: #E41F07;
+  color: #120d0c;
 }
 .nav-tabs.nav-bordered-primary.nav-tabs-top .nav-item .nav-link.active {
-  border-top: 2px solid #E41F07;
+  border-top: 2px solid #0c0807;
   border-bottom: 0;
-  color: #E41F07;
+  color: #120d0c;
 }
 .nav-tabs.nav-bordered-primary.nav-tabs-top li a {
   border-width: 0 0 2px 0;
@@ -7457,8 +7462,8 @@ Author URL: https://themeforest.net/user/dreamstechnologies
   color: #E41F07;
 }
 .nav-tabs.nav-solid-primary.nav-tabs-rounded li a.active {
-  background-color: #E41F07;
-  border-color: #E41F07;
+  background-color: #0c0807;
+  border-color: #120d0c;
   color: var(--white);
   border-radius: 50px;
 }
@@ -7466,18 +7471,18 @@ Author URL: https://themeforest.net/user/dreamstechnologies
   border-color: var(--border-color);
 }
 .nav-tabs.nav-solid-primary.nav-tabs-rounded-fill li a.active {
-  background-color: #E41F07;
-  border-color: #E41F07;
+  background-color: #120d0c;
+  border-color: #17100e;
   color: var(--white);
   border-radius: 50px;
 }
 .nav-tabs.nav-solid-primary li a:hover {
   border-color: transparent;
-  color: #E41F07;
+  color: #120d0c;
 }
 .nav-tabs.nav-solid-primary li a.active {
-  background-color: #E41F07;
-  border-color: #E41F07;
+  background-color: #0c0807;
+  border-color: #0c0807;
   color: var(--white);
   border-radius: 0;
 }
@@ -7738,12 +7743,12 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 }
 
 .nav-tabs.nav-bordered-danger.nav-tabs-top .nav-item .nav-link:hover, .nav-tabs.nav-bordered-danger.nav-tabs-top .nav-item .nav-link:focus {
-  color: #EF1E1E;
+  color: #17100e;
 }
 .nav-tabs.nav-bordered-danger.nav-tabs-top .nav-item .nav-link.active {
-  border-top: 2px solid #EF1E1E;
+  border-top: 2px solid #120d0c;
   border-bottom: 0;
-  color: #EF1E1E;
+  color: #0c0807;
 }
 .nav-tabs.nav-bordered-danger.nav-tabs-top li a {
   border-width: 0 0 2px 0;
@@ -11062,6 +11067,9 @@ Author URL: https://themeforest.net/user/dreamstechnologies
   color: var(--primary);
 }
 
+
+
+
 .profile-upload .profile-upload-img span {
   color: var(--gray-400);
   position: absolute;
@@ -12575,13 +12583,13 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 }
 
 [data-slider-color=primary] .noUi-connect {
-  background: #E41F07;
+  background: #0c0807;
 }
 [data-slider-color=primary] .noUi-handle {
-  background: #E41F07;
+  background: #120d0c;
 }
 [data-slider-color=primary][data-slider-style=border] .noUi-handle, [data-slider-color=primary][data-slider-style=square] .noUi-handle {
-  border-color: #E41F07;
+  border-color: #17100e;
 }
 
 [data-slider-color=secondary] .noUi-connect {
@@ -12625,13 +12633,13 @@ Author URL: https://themeforest.net/user/dreamstechnologies
 }
 
 [data-slider-color=danger] .noUi-connect {
-  background: #EF1E1E;
+  background: #1e0f0f;
 }
 [data-slider-color=danger] .noUi-handle {
-  background: #EF1E1E;
+  background: #2c0f0f;
 }
 [data-slider-color=danger][data-slider-style=border] .noUi-handle, [data-slider-color=danger][data-slider-style=square] .noUi-handle {
-  border-color: #EF1E1E;
+  border-color: #100a09;
 }
 
 [data-slider-color=dark] .noUi-connect {
