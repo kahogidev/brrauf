@@ -1,30 +1,12 @@
 <!-- Main Header-->
-<header class="main-header header-style-two style-two style-dark">
-    <div class="header-top">
-        <div class="auto-container">
-            <div class="inner-box">
-                <!-- top-left -->
-                <div class="top-left">
-                    <span><i class="icon fa-solid fa-envelope"></i> <a href="https://html.kodesolution.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e9878c8c8d818c8599a98a868499888790c78a8684">[email&#160;protected]</a></span>
-                    <span><i class="icon fa-sharp fa-solid fa-location-dot"></i> 88 Broklyn Golden Street. New York</span>
-                </div>
-                <!-- Top-right -->
-                <div class="top-right">
-                    <div class="info-link">
-                        <a href="page-contact.html">Help</a> /
-                        <a href="page-contact.html">Support</a> /
-                        <a href="page-contact.html">Contact</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<header class="main-header header-style-three home-style2">
     <div class="auto-container">
         <!-- Main box -->
-        <div class="main-box px-sm-0">
+        <div class="main-box">
             <div class="logo-box">
-                <div class="logo"><a href="index-2.html"><img src="images/logo-2.png" alt="" title="Interiox"></a></div>
+                <div class="logo"><a href="index-2.html"><img src="images/logo-4.png" alt="" title="Interiox"></a></div>
             </div>
+
             <!--Nav Box-->
             <div class="nav-outer">
                 <nav class="nav main-menu">
@@ -105,19 +87,11 @@
                     </ul>
                 </nav>
                 <!-- Main Menu End-->
-            </div>
-            <div class="outer-box">
-                <div class="ui-btn-outer">
-                    <button class="ui-btn ui-btn search-btn">
-                        <span class="icon lnr lnr-icon-search"></span>
-                    </button>
-                    <a href="shop-cart.html" class="ui-btn cart-btn">
-                        <i class="lnr-icon-shopping-cart"></i>
-                    </a>
-                </div>
-                <div class="mobile-nav-toggler"><i class="icon lnr-icon-bars"></i></div>
+
                 <!-- Mobile Nav toggler -->
+                <div class="mobile-nav-toggler"><span class="icon lnr-icon-bars"></span></div>
             </div>
+
         </div>
         <!-- Mobile Menu  -->
         <div class="mobile-menu">
@@ -145,7 +119,7 @@
                         <div class="contact-info-box">
                             <span class="icon lnr-icon-envelope1"></span>
                             <span class="title">Send Email</span>
-                            <a href="https://html.kodesolution.com/cdn-cgi/l/email-protection#e088858c90a0838f8d90818e99ce838f8d"><span class="__cf_email__" data-cfemail="9ef6fbf2eedefdf1f3eefff0e7b0fdf1f3">[email&#160;protected]</span></a>
+                            <a href="https://html.kodesolution.com/cdn-cgi/l/email-protection#0f676a637f4f6c60627f6e6176216c6062"><span class="__cf_email__" data-cfemail="abc3cec7dbebc8c4c6dbcac5d285c8c4c6">[email&#160;protected]</span></a>
                         </div>
                     </li>
                     <li>
@@ -165,6 +139,7 @@
                 </ul>
             </nav>
         </div><!-- End Mobile Menu -->
+
         <!-- Header Search -->
         <div class="search-popup">
             <span class="search-back-drop"></span>
