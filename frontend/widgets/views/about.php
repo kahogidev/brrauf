@@ -1,3 +1,27 @@
+<?php
+
+use common\helpers\UploadHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+/* @var $model common\models\AboutCompany */
+
+$currentLang = Yii::$app->language;
+$title = $currentLang === 'ru' ? $model->title_ru : $model->title_uz;
+$description = $currentLang === 'ru' ? $model->description_ru : $model->description_uz;
+$content = $currentLang === 'ru' ? $model->content_ru : $model->content_uz;
+
+$images = $model->getImagesArray();
+$videos = $model->getVideosArray();
+
+// Backend rasmlar uchun to'g'ri URL
+function getBackendImageUrl($imagePath) {
+    // OSPanel uchun to'g'ri yo'l
+    return '/backend/web/' . $imagePath;
+}
+?>
+
 <!-- About Section Five -->
 <section class="about-section-five">
     <div class="auto-container">
@@ -6,28 +30,52 @@
             <div class="content-column col-lg-6 wow fadeInRight" data-wow-delay="600ms">
                 <div class="inner-column">
                     <div class="sec-title">
-                        <span class="sub-title">Interiox INTERIOR</span>
-                        <h2>Best Interior Solution</h2>
-                        <div class="text">Interiox in a powerful way of just not an only professions, however, in a passion for our Company. We have to a tendency to believe the idea that smart looking of any website.</div>
+                        <span class="sub-title"><?= Html::encode($title) ?></span>
+                        <h2><?= Html::encode($title) ?></h2>
+                        <div class="text"><?= Html::encode($description) ?></div>
                     </div>
                     <div class="btn-box">
-                        <a href="page-about.html" class="theme-btn btn-style-one"><span class="btn-title">DISCOVER MORE</span></a>
-                    </div>
-                    <figure class="image-1 overlay-anim wow fadeInLeft">
-                        <img src="images/resource/about2-1.jpg" alt="">
-                        <a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-now" data-fancybox="gallery" data-caption="">
-                            <i class="icon fa-sharp fa-solid fa-play"></i>
-                            <span class="ripple"></span>
+                        <a href="<?= Url::to(['/site/about']) ?>" class="theme-btn btn-style-one">
+                            <span class="btn-title">
+                                <?= $currentLang === 'ru' ? 'УЗНАТЬ БОЛЬШЕ' : 'BATAFSIL' ?>
+                            </span>
                         </a>
-                    </figure>
+                    </div>
+
+                    <?php if (!empty($videos)): ?>
+                        <figure class="image-1 overlay-anim wow fadeInLeft">
+                            <?php if (!empty($images) && isset($images[0])): ?>
+
+                                <img src="<?= UploadHelper::getImageUrl($images[0]) ?>" alt="<?= Html::encode($title) ?>">
+                            <?php else: ?>
+                                <img src="/images/resource/about2-1.jpg" alt="<?= Html::encode($title) ?>">
+                            <?php endif; ?>
+
+                            <a href="<?= Html::encode($videos[0]) ?>" class="play-now" data-fancybox="gallery" data-caption="">
+                                <i class="icon fa-sharp fa-solid fa-play"></i>
+                                <span class="ripple"></span>
+                            </a>
+                        </figure>
+                    <?php endif; ?>
                 </div>
             </div>
+
             <!-- Image Column -->
             <div class="image-column col-lg-6">
                 <div class="inner-column wow fadeInLeft">
-                    <span class="stroke-title">INTERIOR</span>
-                    <figure class="image-1 overlay-anim wow reveal-left"><img src="images/resource/about2-2.jpg" alt=""></figure>
-                    <div class="text">For over two decades, we have been a trusted name in the industry, building a legacy defined by commitment, expertise, and lasting relationships. Over the years, many of our partnerships have flourished, standing the test of time through mutual trust</div>
+                    <span class="stroke-title"><?= Html::encode($title) ?></span>
+
+                    <?php if (!empty($images) && isset($images[1])): ?>
+                        <figure class="image-1 overlay-anim wow reveal-left">
+                            <img src="<?= UploadHelper::getImageUrl($images[1]) ?>" alt="<?= Html::encode($title) ?>">
+                        </figure>
+                    <?php else: ?>
+                        <figure class="image-1 overlay-anim wow reveal-left">
+                            <img src="<?= UploadHelper::getImageUrl($images[1]) ?>" alt="<?= Html::encode($title) ?>">
+                        </figure>
+                    <?php endif; ?>
+
+                    <div class="text"><div class="text"><?= $content ?></div></div>
                 </div>
             </div>
         </div>

@@ -1,10 +1,18 @@
 <?php
 namespace frontend\widgets;
-class Header extends \yii\base\Widget
 
+use common\models\Contact;
+use yii\base\Widget;
+
+class Header extends Widget
 {
     public function run()
     {
-        return $this->render('header');
+        // Settings ni olish (faqat 1 ta yozuv)
+        $contact = Contact::getSettings();
+
+        return $this->render('header', [
+            'contact' => $contact,
+        ]);
     }
 }

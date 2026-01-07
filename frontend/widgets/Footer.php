@@ -1,11 +1,17 @@
 <?php
-
 namespace frontend\widgets;
 
-class Footer extends \yii\base\Widget
+use common\models\Contact;
+use yii\base\Widget;
+
+class Footer extends Widget
 {
     public function run()
     {
-        return $this->render('footer');
+        $contact = Contact::getSettings();
+
+        return $this->render('footer', [
+            'contact' => $contact,
+        ]);
     }
 }

@@ -53,9 +53,11 @@ class ProductionVolume extends \yii\db\ActiveRecord
             [['title_uz', 'title_ru'], 'string', 'max' => 255],
             [['unit_uz', 'unit_ru'], 'string', 'max' => 50],
             [['period_uz', 'period_ru'], 'string', 'max' => 100],
-            [['imageFiles'], 'file', 'extensions' => 'png, jpg, jpeg, gif, webp', 'maxFiles' => 10],
+            [['imageFiles'], 'file', 'extensions' => 'png, jpg, jpeg, gif, webp', 'maxFiles' => 10, 'skipOnEmpty' => true],
             [['videoLinks'], 'safe'],
             ['status', 'in', 'range' => [0, 1]],
+            ['status', 'default', 'value' => 1],
+            ['sort_order', 'default', 'value' => 0],
         ];
     }
 
@@ -106,29 +108,34 @@ class ProductionVolume extends \yii\db\ActiveRecord
     {
         $this->imageFiles = UploadedFile::getInstances($this, 'imageFiles');
 
-        if ($this->imageFiles) {
-            $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/production/');
-
-            if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0777, true);
-            }
-
-            $images = $this->getImagesArray();
-
-            foreach ($this->imageFiles as $file) {
-                $fileName = uniqid() . '.' . $file->extension;
-                $filePath = $uploadPath . $fileName;
-
-                if ($file->saveAs($filePath)) {
-                    $images[] = 'backend/web/uploads/production/' . $fileName;
-                }
-            }
-
-            $this->images = json_encode($images);
-            return true;
+        if (!$this->imageFiles) {
+            return false;
         }
 
-        return false;
+        // TO'G'RI YO'L - frontend/web/uploads/production/
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/production/');
+
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
+        $images = $this->getImagesArray();
+
+        foreach ($this->imageFiles as $file) {
+            $fileName = uniqid() . '_' . time() . '.' . $file->extension;
+            $filePath = $uploadPath . $fileName;
+
+            try {
+                if ($file->saveAs($filePath)) {
+                    $images[] = 'uploads/production/' . $fileName;
+                }
+            } catch (\Exception $e) {
+                Yii::error('Rasm yuklashda xatolik: ' . $e->getMessage());
+            }
+        }
+
+        $this->images = json_encode($images);
+        return true;
     }
 
     /**
@@ -158,7 +165,8 @@ class ProductionVolume extends \yii\db\ActiveRecord
             unset($images[$key]);
             $this->images = json_encode(array_values($images));
 
-            $fullPath = Yii::getAlias('@webroot/' . $imagePath);
+            // Frontend dan o'chirish
+            $fullPath = Yii::getAlias('@frontend/web/' . $imagePath);
             if (file_exists($fullPath)) {
                 unlink($fullPath);
             }

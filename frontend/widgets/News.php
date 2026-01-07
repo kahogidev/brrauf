@@ -2,12 +2,25 @@
 
 namespace frontend\widgets;
 
-use yii\base\Widget;
+use common\models\News as NewsModel;
+use Yii;
 
-class News extends Widget
+class News extends \yii\bootstrap5\Widget
 {
     public function run()
     {
-        return $this->render('news');
+        $models = NewsModel::find()
+            ->where(['status' => 1])
+            ->orderBy(['published_date' => SORT_DESC, 'id' => SORT_DESC])
+            ->limit(3)
+            ->all();
+
+        if (empty($models)) {
+            return '';
+        }
+
+        return $this->render('news', [
+            'models' => $models,
+        ]);
     }
 }

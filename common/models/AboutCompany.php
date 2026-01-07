@@ -103,7 +103,8 @@ class AboutCompany extends \yii\db\ActiveRecord
             return false;
         }
 
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/about/');
+        // To'g'ri absolut yo'l
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/about/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -117,7 +118,8 @@ class AboutCompany extends \yii\db\ActiveRecord
 
             try {
                 if ($file->saveAs($filePath)) {
-                    $images[] = 'backend/web/uploads/about/' . $fileName;
+                    // Faqat nisbiy yo'lni saqlash (backend/web ni olib tashlash)
+                    $images[] = 'uploads/about/' . $fileName;
                 }
             } catch (\Exception $e) {
                 Yii::error('Rasm yuklashda xatolik: ' . $e->getMessage());
@@ -126,6 +128,30 @@ class AboutCompany extends \yii\db\ActiveRecord
 
         $this->images = json_encode($images);
         return true;
+    }
+
+    /**
+     * Rasmni o'chirish
+     */
+    public function deleteImage($imagePath)
+    {
+        $images = $this->getImagesArray();
+        $key = array_search($imagePath, $images);
+
+        if ($key !== false) {
+            unset($images[$key]);
+            $this->images = json_encode(array_values($images));
+
+            // To'g'ri yo'l bilan o'chirish
+            $fullPath = Yii::getAlias('@frontend/web/' . $imagePath);
+            if (file_exists($fullPath)) {
+                unlink($fullPath);
+            }
+
+            return $this->save(false);
+        }
+
+        return false;
     }
 
     /**
@@ -146,23 +172,5 @@ class AboutCompany extends \yii\db\ActiveRecord
     /**
      * Rasmni o'chirish
      */
-    public function deleteImage($imagePath)
-    {
-        $images = $this->getImagesArray();
-        $key = array_search($imagePath, $images);
 
-        if ($key !== false) {
-            unset($images[$key]);
-            $this->images = json_encode(array_values($images));
-
-            $fullPath = Yii::getAlias('@webroot/' . $imagePath);
-            if (file_exists($fullPath)) {
-                unlink($fullPath);
-            }
-
-            return $this->save(false);
-        }
-
-        return false;
-    }
 }

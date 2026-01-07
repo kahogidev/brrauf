@@ -14,7 +14,7 @@
             </div>
             <div class="btn-column col-lg-3 col-md-12 col-sm-12 wow slideInUp">
                 <div class="inner-column">
-                    <a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-now-two" data-fancybox="gallery" data-caption="">
+                    <a href="https://www.youtube.com/watch?v=Owvbl9UnJYk" class="play-now-two" data-fancybox="gallery" data-caption="">
                         <i class="icon fa-sharp fa-solid fa-play"></i>
                         <span class="ripple"></span>
                     </a>

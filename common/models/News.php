@@ -7,25 +7,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
 use yii\web\UploadedFile;
 
-/**
- * News model
- *
- * @property int $id
- * @property string $title_uz
- * @property string $title_ru
- * @property string $slug
- * @property string|null $description_uz
- * @property string|null $description_ru
- * @property string|null $content_uz
- * @property string|null $content_ru
- * @property string|null $images
- * @property string|null $videos
- * @property string|null $published_date
- * @property int $status
- * @property int $sort_order
- * @property int $created_at
- * @property int $updated_at
- */
 class News extends \yii\db\ActiveRecord
 {
     public $imageFiles;
@@ -86,24 +67,18 @@ class News extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Rasmlarni JSON formatdan arrayga o'girish
-     */
     public function getImagesArray()
     {
         return $this->images ? json_decode($this->images, true) : [];
     }
 
-    /**
-     * Videolarni JSON formatdan arrayga o'girish
-     */
     public function getVideosArray()
     {
         return $this->videos ? json_decode($this->videos, true) : [];
     }
 
     /**
-     * Rasmlarni yuklash
+     * Rasmlarni yuklash - TO'G'RILANDI
      */
     public function uploadImages()
     {
@@ -113,7 +88,7 @@ class News extends \yii\db\ActiveRecord
             return false;
         }
 
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/news/');
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/news/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -127,7 +102,7 @@ class News extends \yii\db\ActiveRecord
 
             try {
                 if ($file->saveAs($filePath)) {
-                    $images[] = 'backend/web/uploads/news/' . $fileName;
+                    $images[] = 'uploads/news/' . $fileName; // TO'G'RILANDI
                 }
             } catch (\Exception $e) {
                 Yii::error('Rasm yuklashda xatolik: ' . $e->getMessage());
@@ -139,8 +114,28 @@ class News extends \yii\db\ActiveRecord
     }
 
     /**
-     * Video linklar saqlash
+     * Rasmni o'chirish - TO'G'RILANDI
      */
+    public function deleteImage($imagePath)
+    {
+        $images = $this->getImagesArray();
+        $key = array_search($imagePath, $images);
+
+        if ($key !== false) {
+            unset($images[$key]);
+            $this->images = json_encode(array_values($images));
+
+            $fullPath = Yii::getAlias('@frontend/web/' . $imagePath); // TO'G'RILANDI
+            if (file_exists($fullPath)) {
+                unlink($fullPath);
+            }
+
+            return $this->save(false);
+        }
+
+        return false;
+    }
+
     public function saveVideoLinks($videoLinks)
     {
         if (!empty($videoLinks)) {
@@ -153,37 +148,11 @@ class News extends \yii\db\ActiveRecord
         }
     }
 
-    /**
-     * Rasmni o'chirish
-     */
-    public function deleteImage($imagePath)
-    {
-        $images = $this->getImagesArray();
-        $key = array_search($imagePath, $images);
-
-        if ($key !== false) {
-            unset($images[$key]);
-            $this->images = json_encode(array_values($images));
-
-            $fullPath = Yii::getAlias('@webroot/' . $imagePath);
-            if (file_exists($fullPath)) {
-                unlink($fullPath);
-            }
-
-            return $this->save(false);
-        }
-
-        return false;
-    }
-
-    /**
-     * Model o'chirilganda rasmlarni ham o'chirish
-     */
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
             foreach ($this->getImagesArray() as $imagePath) {
-                $fullPath = Yii::getAlias('@webroot/' . $imagePath);
+                $fullPath = Yii::getAlias('@frontend/web/' . $imagePath);
                 if (file_exists($fullPath)) {
                     unlink($fullPath);
                 }

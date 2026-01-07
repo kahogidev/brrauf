@@ -63,7 +63,7 @@ License: copyright commercial
   --theme-color-black5: #0D0C0C;
   --theme-color-black6: #1A1A1A;
   --theme-color-black7-rgb: 55,56,58;
-  --theme-color1: #aa8453;
+  --theme-color1:  #C1A456;
   --theme-color1-rgb: 170, 132, 83;
   --theme-color2: #fdece3;
   --theme-color3: #faf7f2;
@@ -85,10 +85,10 @@ License: copyright commercial
   --review-color: #ffc737;
   --link-color: var(--headings-color);
   --link-hover-color: var(--headings-color);
-  --title-font: "Gilda Display", serif;
-  --text-font: "Barlow", sans-serif;
-  --text-font2: "Barlow Condensed", sans-serif;
-  --text-font3: "Vujahday Script", cursive;
+  --title-font:"Archivo", sans-serif;
+  --text-font: "Archivo", sans-serif;
+  --text-font2: "Archivo", sans-serif;
+  --text-font3: "Archivo", sans-serif;
   --body-font-size: 16px;
   --body-line-height: 1.75;
   --body-font-weight: 400;

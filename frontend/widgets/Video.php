@@ -2,9 +2,7 @@
 
 namespace frontend\widgets;
 
-use yii\base\Widget;
-
-class Video extends Widget
+class Video extends \yii\bootstrap5\Widget
 {
     public function run()
     {

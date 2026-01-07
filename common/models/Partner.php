@@ -90,7 +90,7 @@ class Partner extends \yii\db\ActiveRecord
             }
         }
 
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/partners/');
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/partners/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -101,7 +101,7 @@ class Partner extends \yii\db\ActiveRecord
 
         try {
             if ($this->logoFile->saveAs($filePath)) {
-                $this->logo = 'backend/web/uploads/partners/' . $fileName;
+                $this->logo = 'uploads/partners/' . $fileName;
                 return true;
             }
         } catch (\Exception $e) {

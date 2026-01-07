@@ -106,7 +106,7 @@ class ProductItem extends \yii\db\ActiveRecord
             return false;
         }
 
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/product-items/');
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/product-items/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -120,7 +120,7 @@ class ProductItem extends \yii\db\ActiveRecord
 
             try {
                 if ($file->saveAs($filePath)) {
-                    $images[] = 'backend/web/uploads/product-items/' . $fileName;
+                    $images[] = 'uploads/product-items/' . $fileName;
                 }
             } catch (\Exception $e) {
                 Yii::error('Rasm yuklashda xatolik: ' . $e->getMessage());

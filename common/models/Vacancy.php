@@ -6,30 +6,6 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\web\UploadedFile;
 
-/**
- * Vacancy model
- *
- * @property int $id
- * @property string $title_uz
- * @property string $title_ru
- * @property string|null $description_uz
- * @property string|null $description_ru
- * @property string|null $requirements_uz
- * @property string|null $requirements_ru
- * @property string|null $benefits_uz
- * @property string|null $benefits_ru
- * @property string|null $image
- * @property float|null $salary_from
- * @property float|null $salary_to
- * @property string|null $employment_type
- * @property string|null $deadline
- * @property int $status
- * @property int $sort_order
- * @property int $created_at
- * @property int $updated_at
- *
- * @property VacancyApplication[] $applications
- */
 class Vacancy extends \yii\db\ActiveRecord
 {
     public $imageFile;
@@ -61,7 +37,13 @@ class Vacancy extends \yii\db\ActiveRecord
             [['title_uz', 'title_ru'], 'string', 'max' => 255],
             [['employment_type'], 'string', 'max' => 50],
             [['image'], 'string', 'max' => 500],
-            [['imageFile'], 'file', 'extensions' => 'png, jpg, jpeg, gif, webp', 'skipOnEmpty' => true],
+            // imageFile uchun validation - MUHIM: skipOnEmpty => true
+            [['imageFile'], 'file',
+                'extensions' => 'png, jpg, jpeg, gif, webp',
+                'maxSize' => 5 * 1024 * 1024, // 5MB
+                'skipOnEmpty' => true,  // Bo'sh bo'lsa o'tkazib yuborish
+                'checkExtensionByMimeType' => false, // MIME type tekshirmaslik
+            ],
             ['status', 'in', 'range' => [0, 1]],
             ['status', 'default', 'value' => 1],
             ['sort_order', 'default', 'value' => 0],
@@ -82,6 +64,7 @@ class Vacancy extends \yii\db\ActiveRecord
             'benefits_uz' => 'Imkoniyatlar (O\'zbekcha)',
             'benefits_ru' => 'Imkoniyatlar (Ruscha)',
             'image' => 'Rasm',
+            'imageFile' => 'Rasm',
             'salary_from' => 'Maosh (dan)',
             'salary_to' => 'Maosh (gacha)',
             'employment_type' => 'Ish turi',
@@ -93,17 +76,11 @@ class Vacancy extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Arizalar bilan bog'lanish
-     */
     public function getApplications()
     {
         return $this->hasMany(VacancyApplication::class, ['vacancy_id' => 'id']);
     }
 
-    /**
-     * Yangi arizalar soni
-     */
     public function getNewApplicationsCount()
     {
         return $this->hasMany(VacancyApplication::class, ['vacancy_id' => 'id'])
@@ -111,9 +88,6 @@ class Vacancy extends \yii\db\ActiveRecord
             ->count();
     }
 
-    /**
-     * Ish turlari ro'yxati
-     */
     public static function getEmploymentTypes()
     {
         return [
@@ -123,18 +97,12 @@ class Vacancy extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Ish turi nomini olish
-     */
     public function getEmploymentTypeName()
     {
         $types = self::getEmploymentTypes();
         return isset($types[$this->employment_type]) ? $types[$this->employment_type] : '';
     }
 
-    /**
-     * Maosh oralig'ini formatlash
-     */
     public function getFormattedSalary()
     {
         if ($this->salary_from && $this->salary_to) {
@@ -149,35 +117,40 @@ class Vacancy extends \yii\db\ActiveRecord
 
     /**
      * Rasm yuklash
+     * @return bool
      */
     public function uploadImage()
     {
+        // Faylni olish
         $this->imageFile = UploadedFile::getInstance($this, 'imageFile');
 
+        // Agar fayl yuborilmagan bo'lsa
         if (!$this->imageFile) {
             return false;
         }
 
-        // Eski rasmni o'chirish
-        if ($this->image) {
-            $oldImage = Yii::getAlias('@webroot/' . $this->image);
-            if (file_exists($oldImage)) {
-                unlink($oldImage);
-            }
-        }
-
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/vacancies/');
-
+        // Upload papkasini tekshirish va yaratish
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/vacancies/');
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
         }
 
+        // Eski rasmni o'chirish
+        if ($this->image && !$this->isNewRecord) {
+            $oldImage = Yii::getAlias('@frontend/web/' . $this->image);
+            if (file_exists($oldImage)) {
+                @unlink($oldImage);
+            }
+        }
+
+        // Yangi fayl nomi
         $fileName = uniqid() . '_' . time() . '.' . $this->imageFile->extension;
         $filePath = $uploadPath . $fileName;
 
+        // Faylni saqlash
         try {
             if ($this->imageFile->saveAs($filePath)) {
-                $this->image = 'backend/web/uploads/vacancies/' . $fileName;
+                $this->image = 'uploads/vacancies/' . $fileName;
                 return true;
             }
         } catch (\Exception $e) {
@@ -187,16 +160,13 @@ class Vacancy extends \yii\db\ActiveRecord
         return false;
     }
 
-    /**
-     * Model o'chirilganda rasmni ham o'chirish
-     */
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
             if ($this->image) {
-                $fullPath = Yii::getAlias('@webroot/' . $this->image);
+                $fullPath = Yii::getAlias('@frontend/web/' . $this->image);
                 if (file_exists($fullPath)) {
-                    unlink($fullPath);
+                    @unlink($fullPath);
                 }
             }
             return true;

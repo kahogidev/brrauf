@@ -150,7 +150,7 @@ class Promotion extends \yii\db\ActiveRecord
             }
         }
 
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/promotions/');
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/promotions/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -161,7 +161,7 @@ class Promotion extends \yii\db\ActiveRecord
 
         try {
             if ($this->imageFile->saveAs($filePath)) {
-                $this->image = 'backend/web/uploads/promotions/' . $fileName;
+                $this->image = 'uploads/promotions/' . $fileName;
                 return true;
             }
         } catch (\Exception $e) {

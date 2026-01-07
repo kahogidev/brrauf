@@ -6,21 +6,6 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\web\UploadedFile;
 
-/**
- * Manager model
- *
- * @property int $id
- * @property string $full_name
- * @property string $position_uz
- * @property string $position_ru
- * @property string|null $bio_uz
- * @property string|null $bio_ru
- * @property string|null $photo
- * @property int $status
- * @property int $sort_order
- * @property int $created_at
- * @property int $updated_at
- */
 class Manager extends \yii\db\ActiveRecord
 {
     public $photoFile;
@@ -83,13 +68,13 @@ class Manager extends \yii\db\ActiveRecord
 
         // Eski rasmni o'chirish
         if ($this->photo) {
-            $oldPhoto = Yii::getAlias('@webroot/' . $this->photo);
+            $oldPhoto = Yii::getAlias('@frontend/web/' . $this->photo);
             if (file_exists($oldPhoto)) {
                 unlink($oldPhoto);
             }
         }
 
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/managers/');
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/managers/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -100,7 +85,7 @@ class Manager extends \yii\db\ActiveRecord
 
         try {
             if ($this->photoFile->saveAs($filePath)) {
-                $this->photo = 'backend/web/uploads/managers/' . $fileName;
+                $this->photo = 'uploads/managers/' . $fileName;
                 return true;
             }
         } catch (\Exception $e) {
@@ -116,7 +101,7 @@ class Manager extends \yii\db\ActiveRecord
     public function deletePhoto()
     {
         if ($this->photo) {
-            $fullPath = Yii::getAlias('@webroot/' . $this->photo);
+            $fullPath = Yii::getAlias('@frontend/web/' . $this->photo);
             if (file_exists($fullPath)) {
                 unlink($fullPath);
             }
@@ -133,7 +118,7 @@ class Manager extends \yii\db\ActiveRecord
     {
         if (parent::beforeDelete()) {
             if ($this->photo) {
-                $fullPath = Yii::getAlias('@webroot/' . $this->photo);
+                $fullPath = Yii::getAlias('@frontend/web/' . $this->photo);
                 if (file_exists($fullPath)) {
                     unlink($fullPath);
                 }

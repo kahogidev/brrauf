@@ -2,12 +2,24 @@
 
 namespace frontend\widgets;
 
-use yii\base\Widget;
+use common\models\Partner;
+use Yii;
 
-class Sponsors extends Widget
+class Sponsors extends \yii\bootstrap5\Widget
 {
     public function run()
     {
-        return $this->render('sponsors');
+        $models = Partner::find()
+            ->where(['status' => 1])
+            ->orderBy(['sort_order' => SORT_ASC, 'id' => SORT_ASC])
+            ->all();
+
+        if (empty($models)) {
+            return '';
+        }
+
+        return $this->render('sponsors', [
+            'models' => $models,
+        ]);
     }
 }

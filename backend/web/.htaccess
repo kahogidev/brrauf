@@ -2,6 +2,11 @@ Options -Indexes
 
 RewriteEngine On
 
+# Common uploads ga yo'naltirish
+RewriteCond %{REQUEST_URI} ^/uploads/
+RewriteCond %{DOCUMENT_ROOT}/../common%{REQUEST_URI} -f
+RewriteRule ^uploads/(.*)$ ../../common/uploads/$1 [L]
+
 # index.php ni yashirish
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

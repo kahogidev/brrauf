@@ -46,7 +46,14 @@ class CompanyHistory extends \yii\db\ActiveRecord
             [['year', 'status', 'sort_order'], 'integer'],
             [['description_uz', 'description_ru', 'images', 'videos'], 'string'],
             [['title_uz', 'title_ru'], 'string', 'max' => 255],
-            [['imageFiles'], 'file', 'extensions' => 'png, jpg, jpeg, gif, webp', 'maxFiles' => 10, 'skipOnEmpty' => true],
+            // MUHIM: skipOnEmpty, checkExtensionByMimeType, maxSize
+            [['imageFiles'], 'file',
+                'extensions' => 'png, jpg, jpeg, gif, webp',
+                'maxFiles' => 10,
+                'maxSize' => 20 * 1024 * 1024, // 20MB har bir rasm
+                'skipOnEmpty' => true,
+                'checkExtensionByMimeType' => false,
+            ],
             [['videoLinks'], 'safe'],
             ['status', 'in', 'range' => [0, 1]],
             ['status', 'default', 'value' => 1],
@@ -102,7 +109,7 @@ class CompanyHistory extends \yii\db\ActiveRecord
             return false;
         }
 
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/history/');
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/history/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -116,7 +123,7 @@ class CompanyHistory extends \yii\db\ActiveRecord
 
             try {
                 if ($file->saveAs($filePath)) {
-                    $images[] = 'backend/web/uploads/history/' . $fileName;
+                    $images[] = 'uploads/history/' . $fileName;
                 }
             } catch (\Exception $e) {
                 Yii::error('Rasm yuklashda xatolik: ' . $e->getMessage());
@@ -125,6 +132,30 @@ class CompanyHistory extends \yii\db\ActiveRecord
 
         $this->images = json_encode($images);
         return true;
+    }
+
+    /**
+     * Rasmni o'chirish
+     */
+    public function deleteImage($imagePath)
+    {
+        $images = $this->getImagesArray();
+        $key = array_search($imagePath, $images);
+
+        if ($key !== false) {
+            unset($images[$key]);
+            $this->images = json_encode(array_values($images));
+
+            // Faylni o'chirish
+            $fullPath = Yii::getAlias('@frontend/web/' . $imagePath);
+            if (file_exists($fullPath)) {
+                @unlink($fullPath);
+            }
+
+            return $this->save(false);
+        }
+
+        return false;
     }
 
     /**
@@ -143,25 +174,19 @@ class CompanyHistory extends \yii\db\ActiveRecord
     }
 
     /**
-     * Rasmni o'chirish
+     * O'chirilishdan oldin rasmlarni o'chirish
      */
-    public function deleteImage($imagePath)
+    public function beforeDelete()
     {
-        $images = $this->getImagesArray();
-        $key = array_search($imagePath, $images);
-
-        if ($key !== false) {
-            unset($images[$key]);
-            $this->images = json_encode(array_values($images));
-
-            $fullPath = Yii::getAlias('@webroot/' . $imagePath);
-            if (file_exists($fullPath)) {
-                unlink($fullPath);
+        if (parent::beforeDelete()) {
+            foreach ($this->getImagesArray() as $imagePath) {
+                $fullPath = Yii::getAlias('@frontend/web/' . $imagePath);
+                if (file_exists($fullPath)) {
+                    @unlink($fullPath);
+                }
             }
-
-            return $this->save(false);
+            return true;
         }
-
         return false;
     }
 }

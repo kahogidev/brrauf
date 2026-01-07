@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * CompanyHistoryController CRUD controlleri
@@ -17,6 +18,15 @@ class CompanyHistoryController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -67,14 +77,28 @@ class CompanyHistoryController extends Controller
             $videoLinks = Yii::$app->request->post('videoLinks', []);
             $model->saveVideoLinks($videoLinks);
 
-            // Rasmlarni yuklash
-            $model->uploadImages();
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                // Avval modelni saqlash
+                if ($model->save()) {
+                    // Keyin rasmlarni yuklash
+                    $uploadResult = $model->uploadImages();
 
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Tarix muvaffaqiyatli saqlandi.');
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                Yii::$app->session->setFlash('error', 'Tarixni saqlashda xatolik yuz berdi.');
+                    // Agar rasmlar yuklangan bo'lsa, modelni qayta saqlash
+                    if ($uploadResult) {
+                        $model->save(false); // false - validatsiyasiz
+                    }
+
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Tarix muvaffaqiyatli saqlandi.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error', 'Tarixni saqlashda xatolik yuz berdi. Xatolarni tekshiring.');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', 'Xatolik yuz berdi: ' . $e->getMessage());
             }
         }
 
@@ -96,14 +120,28 @@ class CompanyHistoryController extends Controller
             $videoLinks = Yii::$app->request->post('videoLinks', []);
             $model->saveVideoLinks($videoLinks);
 
-            // Yangi rasmlarni yuklash
-            $model->uploadImages();
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                // Avval modelni saqlash
+                if ($model->save()) {
+                    // Keyin rasmlarni yuklash
+                    $uploadResult = $model->uploadImages();
 
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Tarix muvaffaqiyatli yangilandi.');
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                Yii::$app->session->setFlash('error', 'Tarixni yangilashda xatolik yuz berdi.');
+                    // Agar rasmlar yuklangan bo'lsa, modelni qayta saqlash
+                    if ($uploadResult) {
+                        $model->save(false);
+                    }
+
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Tarix muvaffaqiyatli yangilandi.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error', 'Tarixni yangilashda xatolik yuz berdi. Xatolarni tekshiring.');
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', 'Xatolik yuz berdi: ' . $e->getMessage());
             }
         }
 
@@ -119,17 +157,12 @@ class CompanyHistoryController extends Controller
     {
         $model = $this->findModel($id);
 
-        // Rasmlarni o'chirish
-        foreach ($model->getImagesArray() as $imagePath) {
-            $fullPath = Yii::getAlias('@webroot/' . $imagePath);
-            if (file_exists($fullPath)) {
-                unlink($fullPath);
-            }
+        if ($model->delete()) {
+            Yii::$app->session->setFlash('success', 'Tarix muvaffaqiyatli o\'chirildi.');
+        } else {
+            Yii::$app->session->setFlash('error', 'Tarixni o\'chirishda xatolik yuz berdi.');
         }
 
-        $model->delete();
-
-        Yii::$app->session->setFlash('success', 'Tarix muvaffaqiyatli o\'chirildi.');
         return $this->redirect(['index']);
     }
 

@@ -102,38 +102,60 @@ class Category extends \yii\db\ActiveRecord
     /**
      * Rasmni yuklash
      */
-    public function uploadImage()
+    public function uploadImages()
     {
-        $this->imageFile = UploadedFile::getInstance($this, 'imageFile');
+        $this->imageFiles = UploadedFile::getInstances($this, 'imageFiles');
 
-        if (!$this->imageFile) {
+        if (!$this->imageFiles) {
             return false;
         }
 
-        // Eski rasmni o'chirish
-        if ($this->image) {
-            $oldImage = Yii::getAlias('@webroot/' . $this->image);
-            if (file_exists($oldImage)) {
-                unlink($oldImage);
-            }
-        }
-
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/categories/');
+        // To'g'ri absolut yo'l
+        $uploadPath = Yii::getAlias('@feontend/web/uploads/category/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
         }
 
-        $fileName = uniqid() . '_' . time() . '.' . $this->imageFile->extension;
-        $filePath = $uploadPath . $fileName;
+        $images = $this->getImagesArray();
 
-        try {
-            if ($this->imageFile->saveAs($filePath)) {
-                $this->image = 'backend/web/uploads/categories/' . $fileName;
-                return true;
+        foreach ($this->imageFiles as $file) {
+            $fileName = uniqid() . '_' . time() . '.' . $file->extension;
+            $filePath = $uploadPath . $fileName;
+
+            try {
+                if ($file->saveAs($filePath)) {
+                    // Faqat nisbiy yo'lni saqlash (backend/web ni olib tashlash)
+                    $images[] = 'uploads/category/' . $fileName;
+                }
+            } catch (\Exception $e) {
+                Yii::error('Rasm yuklashda xatolik: ' . $e->getMessage());
             }
-        } catch (\Exception $e) {
-            Yii::error('Rasm yuklashda xatolik: ' . $e->getMessage());
+        }
+
+        $this->images = json_encode($images);
+        return true;
+    }
+
+    /**
+     * Rasmni o'chirish
+     */
+    public function deleteImage($imagePath)
+    {
+        $images = $this->getImagesArray();
+        $key = array_search($imagePath, $images);
+
+        if ($key !== false) {
+            unset($images[$key]);
+            $this->images = json_encode(array_values($images));
+
+            // To'g'ri yo'l bilan o'chirish
+            $fullPath = Yii::getAlias('@backend/web/' . $imagePath);
+            if (file_exists($fullPath)) {
+                unlink($fullPath);
+            }
+
+            return $this->save(false);
         }
 
         return false;

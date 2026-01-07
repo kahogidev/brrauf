@@ -4,17 +4,17 @@
     <div class="sidebar-logo">
         <div>
             <!-- Logo Normal -->
-            <a href="index-2.html" class="logo logo-normal">
-                <img src="/img/logo.svg" alt="Logo">
+            <a href="/" class="logo logo-normal">
+                <img style="width: 100px; object-fit: cover" src="/img/logo_horizontal.png" alt="Logo">
             </a>
 
             <!-- Logo Small -->
-            <a href="index-2.html" class="logo-small">
-                <img src="/img/logo-small.svg" alt="Logo">
+            <a href="/" class="logo-small">
+                <img src="/img/logo_horizontal.png" alt="Logo">
             </a>
 
             <!-- Logo Dark -->
-            <a href="index-2.html" class="dark-logo">
+            <a href="/" class="dark-logo">
                 <img src="/img/logo-white.svg" alt="Logo">
             </a>
         </div>
@@ -50,17 +50,7 @@
                         </li>
 
 
-                        <li class="submenu">
-                            <a href="">
-                                <i class="ti ti-category"></i>
-                                <span>Kategoriya</span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul>
-                                <li><a href="/category/create">Yaratish</a></li>
-                                <li><a href="/category/index">Ko'rish</a></li>
-                            </ul>
-                        </li>
+
 
 
                         <li class="submenu">
@@ -127,7 +117,17 @@
                                 <li><a href="/portfolio/index">Ko'rish</a></li>
                             </ul>
                         </li>
-
+                        <li class="submenu">
+                            <a href="">
+                                <i class="ti ti-category"></i>
+                                <span>Kategoriya</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li><a href="/category/create">Yaratish</a></li>
+                                <li><a href="/category/index">Ko'rish</a></li>
+                            </ul>
+                        </li>
                         <li class="submenu">
                             <a href="">
                                 <i class="ti ti-shopping-bag"></i>
@@ -143,7 +143,7 @@
                         <li class="submenu">
                             <a href="">
                                 <i class="ti ti-briefcase-2"></i>
-                                <span>Product-item</span>
+                                <span>Maxsulot-variantlari</span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <ul>
@@ -156,7 +156,7 @@
                         <li class="submenu">
                             <a href="">
                                 <i class="ti ti-volume"></i>
-                                <span>Products volume</span>
+                                <span>Ishlab chiqarish Hajmi</span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <ul>
@@ -167,7 +167,7 @@
                         <li class="submenu">
                             <a href="">
                                 <i class="ti ti-ad"></i>
-                                <span>Promotion</span>
+                                <span>Aksiyalar</span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <ul>
@@ -175,8 +175,39 @@
                                 <li><a href="/promotion/index">Ko'rish</a></li>
                             </ul>
                         </li>
-
-
+                        <li class="submenu">
+                            <a href="">
+                                <i class="ti ti-ad"></i>
+                                <span>Vakansiyalar</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li><a href="/vacancy/create">Yaratish</a></li>
+                                <li><a href="/vacancy/index">Ko'rish</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="">
+                                <i class="ti ti-ad"></i>
+                                <span>Kontaktlar</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li><a href="/contact/create">Yaratish</a></li>
+                                <li><a href="/contact/index">Ko'rish</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="">
+                                <i class="ti ti-ad"></i>
+                                <span>Aksiyalar</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                <li><a href="/promotion/create">Yaratish</a></li>
+                                <li><a href="/promotion/index">Ko'rish</a></li>
+                            </ul>
+                        </li>
 
 
 

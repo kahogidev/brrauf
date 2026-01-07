@@ -60,7 +60,13 @@ class VacancyApplication extends \yii\db\ActiveRecord
             [['phone'], 'string', 'max' => 50],
             [['resume_file'], 'string', 'max' => 500],
             [['status'], 'string', 'max' => 50],
-            [['resumeFile'], 'file', 'extensions' => 'pdf, doc, docx', 'maxSize' => 5 * 1024 * 1024, 'skipOnEmpty' => true],
+            // Resume file validation
+            [['resumeFile'], 'file',
+                'extensions' => 'pdf, doc, docx',
+                'maxSize' => 5 * 1024 * 1024,
+                'skipOnEmpty' => true,
+                'checkExtensionByMimeType' => false,
+            ],
             ['status', 'in', 'range' => [self::STATUS_NEW, self::STATUS_VIEWED, self::STATUS_ACCEPTED, self::STATUS_REJECTED]],
             ['status', 'default', 'value' => self::STATUS_NEW],
             [['vacancy_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vacancy::class, 'targetAttribute' => ['vacancy_id' => 'id']],
@@ -155,7 +161,7 @@ class VacancyApplication extends \yii\db\ActiveRecord
             }
         }
 
-        $uploadPath = Yii::getAlias('@webroot/backend/web/uploads/resumes/');
+        $uploadPath = Yii::getAlias('@frontend/web/uploads/resumes/');
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
@@ -166,7 +172,7 @@ class VacancyApplication extends \yii\db\ActiveRecord
 
         try {
             if ($this->resumeFile->saveAs($filePath)) {
-                $this->resume_file = 'backend/web/uploads/resumes/' . $fileName;
+                $this->resume_file = 'uploads/resumes/' . $fileName;
                 return true;
             }
         } catch (\Exception $e) {

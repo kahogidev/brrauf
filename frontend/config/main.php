@@ -36,14 +36,25 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'vacancy' => 'site/vacancy',
+                'vacancy/<id:\d+>' => 'site/vacancy-view',
+                'vacancy/<id:\d+>/apply' => 'site/vacancy-apply',
+                'partners' => 'site/partners',
+                'promotions' => 'site/promotions',
+                'promotion/<id:\d+>' => 'site/promotion-detail',
+                'portfolio/' => 'site/portfolio',
+                'product/' => 'site/product',
+                'portfolio/<id:\d+>' => 'site/portfolio-view',
+                '<language:(uz|ru)>/' => 'site/index',
+                '<language:(uz|ru)>/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];
